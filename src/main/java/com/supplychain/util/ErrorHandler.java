@@ -1,62 +1,57 @@
 package com.supplychain.util;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Utility class for consistent error handling and logging across the application.
- * Provides methods to log exceptions with stack traces and display user-friendly error dialogs.
+ * Utility class for consistent error handling and logging across the web application.
+ * Provides methods to log exceptions with stack traces and format user-friendly error messages.
  * 
  * Requirements: 8.1, 8.3, 8.4
  */
 public class ErrorHandler {
     
     /**
-     * Logs an exception with full stack trace and displays a user-friendly error dialog.
+     * Logs an exception with full stack trace and returns a user-friendly error message.
      * Requirements: 8.4 - Log error details and present user-friendly messages
      * 
      * @param logger The logger to use for logging the exception
-     * @param parentComponent The parent component for the error dialog
      * @param userMessage The user-friendly message to display
      * @param exception The exception that occurred
-     * @param title The title for the error dialog
+     * @param title The title for the error
+     * @return The formatted user-friendly error message
      */
-    public static void handleException(Logger logger, Component parentComponent, 
-                                      String userMessage, Exception exception, String title) {
+    public static String handleException(Logger logger, String userMessage, Exception exception, String title) {
         // Log the exception with full stack trace
         logger.log(Level.SEVERE, "Exception occurred: " + userMessage, exception);
         
-        // Display user-friendly error dialog
-        showErrorDialog(parentComponent, userMessage, title);
+        // Return formatted error message for web display
+        return formatErrorMessage(title, userMessage);
     }
     
     /**
-     * Logs an exception with full stack trace and displays a user-friendly error dialog.
+     * Logs an exception with full stack trace and returns a user-friendly error message.
      * Uses default title "Error".
      * 
      * @param logger The logger to use for logging the exception
-     * @param parentComponent The parent component for the error dialog
      * @param userMessage The user-friendly message to display
      * @param exception The exception that occurred
+     * @return The formatted user-friendly error message
      */
-    public static void handleException(Logger logger, Component parentComponent, 
-                                      String userMessage, Exception exception) {
-        handleException(logger, parentComponent, userMessage, exception, "Error");
+    public static String handleException(Logger logger, String userMessage, Exception exception) {
+        return handleException(logger, userMessage, exception, "Error");
     }
     
     /**
-     * Logs a blockchain validation error with details and displays a user-friendly error dialog.
+     * Logs a blockchain validation error with details and returns a user-friendly error message.
      * Requirements: 8.3 - Provide detailed error information about validation failures
      * 
      * @param logger The logger to use for logging the error
-     * @param parentComponent The parent component for the error dialog
      * @param validationDetails Detailed information about which validation check failed
      * @param exception The exception that occurred (can be null)
+     * @return The formatted user-friendly error message
      */
-    public static void handleBlockchainValidationError(Logger logger, Component parentComponent, 
-                                                       String validationDetails, Exception exception) {
+    public static String handleBlockchainValidationError(Logger logger, String validationDetails, Exception exception) {
         // Log detailed validation error
         if (exception != null) {
             logger.log(Level.SEVERE, "Blockchain validation failed: " + validationDetails, exception);
@@ -64,99 +59,81 @@ public class ErrorHandler {
             logger.severe("Blockchain validation failed: " + validationDetails);
         }
         
-        // Display user-friendly error dialog with validation details
-        String userMessage = "Blockchain validation failed.\n\n" +
-                           "Details: " + validationDetails + "\n\n" +
-                           "This may indicate data tampering or corruption.";
+        // Return user-friendly error message with validation details
+        String userMessage = "Blockchain validation failed. Details: " + validationDetails + 
+                           ". This may indicate data tampering or corruption.";
         
-        showErrorDialog(parentComponent, userMessage, "Blockchain Validation Error");
+        return formatErrorMessage("Blockchain Validation Error", userMessage);
     }
     
     /**
-     * Logs an invalid input error and displays a user-friendly warning dialog.
+     * Logs an invalid input error and returns a user-friendly warning message.
      * Requirements: 8.1 - Provide specific error messages for invalid data
      * 
      * @param logger The logger to use for logging the error
-     * @param parentComponent The parent component for the warning dialog
      * @param fieldName The name of the field with invalid input
      * @param reason The reason why the input is invalid
+     * @return The formatted user-friendly warning message
      */
-    public static void handleInvalidInput(Logger logger, Component parentComponent, 
-                                         String fieldName, String reason) {
+    public static String handleInvalidInput(Logger logger, String fieldName, String reason) {
         // Log the invalid input
         logger.warning("Invalid input for " + fieldName + ": " + reason);
         
-        // Display user-friendly warning dialog
-        String userMessage = "Invalid input for " + fieldName + ".\n\n" + reason;
-        showWarningDialog(parentComponent, userMessage, "Validation Error");
+        // Return user-friendly warning message
+        String userMessage = "Invalid input for " + fieldName + ". " + reason;
+        return formatErrorMessage("Validation Error", userMessage);
     }
     
     /**
-     * Logs a database connection error and displays a user-friendly error dialog.
+     * Logs a database connection error and returns a user-friendly error message.
      * Requirements: 8.2 - Handle database connection failures
      * 
      * @param logger The logger to use for logging the error
-     * @param parentComponent The parent component for the error dialog
      * @param exception The exception that occurred
+     * @return The formatted user-friendly error message
      */
-    public static void handleDatabaseError(Logger logger, Component parentComponent, Exception exception) {
+    public static String handleDatabaseError(Logger logger, Exception exception) {
         // Log the database error with full stack trace
         logger.log(Level.SEVERE, "Database error occurred", exception);
         
-        // Display user-friendly error dialog
-        String userMessage = "A database error occurred.\n\n" +
-                           "Please check your database connection and try again.\n" +
+        // Return user-friendly error message
+        String userMessage = "A database error occurred. Please check your database connection and try again. " +
                            "If the problem persists, contact your system administrator.";
         
-        showErrorDialog(parentComponent, userMessage, "Database Error");
+        return formatErrorMessage("Database Error", userMessage);
     }
     
     /**
-     * Displays a user-friendly error dialog.
+     * Formats an error message for web display.
      * 
-     * @param parentComponent The parent component for the dialog
+     * @param title The title for the error
      * @param message The error message to display
-     * @param title The title for the dialog
+     * @return The formatted error message
      */
-    public static void showErrorDialog(Component parentComponent, String message, String title) {
-        JOptionPane.showMessageDialog(
-            parentComponent,
-            message,
-            title,
-            JOptionPane.ERROR_MESSAGE
-        );
+    public static String formatErrorMessage(String title, String message) {
+        return title + ": " + message;
     }
     
     /**
-     * Displays a user-friendly warning dialog.
+     * Formats a warning message for web display.
      * 
-     * @param parentComponent The parent component for the dialog
+     * @param title The title for the warning
      * @param message The warning message to display
-     * @param title The title for the dialog
+     * @return The formatted warning message
      */
-    public static void showWarningDialog(Component parentComponent, String message, String title) {
-        JOptionPane.showMessageDialog(
-            parentComponent,
-            message,
-            title,
-            JOptionPane.WARNING_MESSAGE
-        );
+    public static String formatWarningMessage(String title, String message) {
+        return title + ": " + message;
     }
     
     /**
-     * Displays a user-friendly information dialog.
+     * Formats an information message for web display.
      * 
-     * @param parentComponent The parent component for the dialog
+     * @param title The title for the information
      * @param message The information message to display
-     * @param title The title for the dialog
+     * @return The formatted information message
      */
-    public static void showInfoDialog(Component parentComponent, String message, String title) {
-        JOptionPane.showMessageDialog(
-            parentComponent,
-            message,
-            title,
-            JOptionPane.INFORMATION_MESSAGE
-        );
+    public static String formatInfoMessage(String title, String message) {
+        return title + ": " + message;
     }
     
     /**

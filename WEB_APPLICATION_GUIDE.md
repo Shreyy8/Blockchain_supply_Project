@@ -1,7 +1,7 @@
 # Blockchain Supply Chain Management - Web Application Guide
 
 ## Overview
-The project has been successfully converted from a desktop GUI application to a modern web-based application using Java servlets, JSP, and Bootstrap for the frontend.
+The project is a modern web-based application using Java servlets, JSP, and Bootstrap for the frontend. All legacy desktop GUI components have been removed to focus on the web interface.
 
 ## Architecture
 

@@ -3,18 +3,17 @@ package com.supplychain;
 import com.supplychain.blockchain.BlockchainManager;
 import com.supplychain.exception.ConnectionException;
 import com.supplychain.exception.DatabaseException;
-import com.supplychain.gui.LoginFrame;
 import com.supplychain.util.DatabaseConnectionManager;
 import com.supplychain.util.DatabaseInitializer;
 
-import javax.swing.*;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
  * Main entry point for the Blockchain-based Supply Chain Management System.
- * Initializes the database, creates the genesis block, and launches the login GUI.
+ * Initializes the database and creates the genesis block for the blockchain.
+ * This class provides core system initialization for the web-based application.
  * 
  * Requirements: 11.1 - Database connection and schema initialization
  */
@@ -51,31 +50,24 @@ public class Main {
             LOGGER.info("Step 3: Creating genesis block for blockchain...");
             createGenesisBlock();
             
-            // Step 4: Launch login GUI
-            LOGGER.info("Step 4: Launching login GUI...");
-            launchLoginGUI();
-            
-            LOGGER.info("Application started successfully!");
+            LOGGER.info("Core system initialization completed successfully!");
+            LOGGER.info("Web application can now be started using: mvn jetty:run");
             
         } catch (ConnectionException e) {
             LOGGER.log(Level.SEVERE, "Failed to establish database connection", e);
-            showErrorDialog("Database Connection Error",
-                "Failed to connect to the database. Please check your database configuration.\n\n" +
-                "Error: " + e.getMessage());
+            System.err.println("Database Connection Error: " + e.getMessage());
+            System.err.println("Please check your database configuration and ensure MySQL is running.");
             System.exit(1);
             
         } catch (DatabaseException e) {
             LOGGER.log(Level.SEVERE, "Failed to initialize database schema", e);
-            showErrorDialog("Database Initialization Error",
-                "Failed to initialize the database schema.\n\n" +
-                "Error: " + e.getMessage());
+            System.err.println("Database Initialization Error: " + e.getMessage());
+            System.err.println("Please check database permissions and configuration.");
             System.exit(1);
             
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Unexpected error during application startup", e);
-            showErrorDialog("Application Startup Error",
-                "An unexpected error occurred during application startup.\n\n" +
-                "Error: " + e.getMessage());
+            System.err.println("Application Startup Error: " + e.getMessage());
             System.exit(1);
         }
     }
@@ -164,54 +156,7 @@ public class Main {
         LOGGER.info("Blockchain initialized with " + blockchainManager.getChain().size() + " block(s)");
     }
     
-    /**
-     * Launches the login GUI on the Event Dispatch Thread.
-     * Requirements: 9.1 - Launch login GUI for user authentication
-     */
-    private static void launchLoginGUI() {
-        LOGGER.info("Launching login GUI...");
-        
-        // Set system look and feel for better native appearance
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            LOGGER.info("System look and feel applied");
-        } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Failed to set system look and feel, using default", e);
-        }
-        
-        // Create and display the login frame on the Event Dispatch Thread
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    LoginFrame loginFrame = new LoginFrame();
-                    loginFrame.setVisible(true);
-                    LOGGER.info("Login GUI launched successfully");
-                } catch (Exception e) {
-                    LOGGER.log(Level.SEVERE, "Failed to create login frame", e);
-                    showErrorDialog("GUI Error",
-                        "Failed to launch the login interface.\n\n" +
-                        "Error: " + e.getMessage());
-                    System.exit(1);
-                }
-            }
-        });
-    }
-    
-    /**
-     * Displays an error dialog to the user.
-     * 
-     * @param title The dialog title
-     * @param message The error message to display
-     */
-    private static void showErrorDialog(String title, String message) {
-        JOptionPane.showMessageDialog(
-            null,
-            message,
-            title,
-            JOptionPane.ERROR_MESSAGE
-        );
-    }
+
     
     /**
      * Gets the application-wide blockchain manager instance.
