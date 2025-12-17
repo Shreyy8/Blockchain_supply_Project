@@ -54,8 +54,8 @@ mvn test -Dtest=TransactionValidationPropertyTest
 - ☐ PRESENTATION_DEMO.md (sample outputs)
 - ☐ DEMO_SCRIPT.md (talking points)
 - ☐ QUICK_COMMANDS.txt (command reference)
-- ☐ Design document (.kiro/specs/blockchain-supply-chain/design.md)
-- ☐ Requirements document (.kiro/specs/blockchain-supply-chain/requirements.md)
+- ☐ Design document (docs/design.md)
+- ☐ Requirements document (docs/requirements.md)
 
 ### Slides/Visuals Prepared:
 - ☐ Architecture diagram

@@ -137,9 +137,9 @@ PRESENTATION_DEMO.md  - Complete demo guide with sample outputs
 DEMO_SCRIPT.md        - Quick reference script with talking points
 QUICK_COMMANDS.txt    - This file (command cheat sheet)
 
-Design Doc:  .kiro/specs/blockchain-supply-chain/design.md
-Requirements: .kiro/specs/blockchain-supply-chain/requirements.md
-Tasks:       .kiro/specs/blockchain-supply-chain/tasks.md
+Design Doc:  docs/design.md
+Requirements: docs/requirements.md
+Tasks:       docs/tasks.md
 
 
 ═══════════════════════════════════════════════════════════════════

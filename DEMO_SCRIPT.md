@@ -324,8 +324,8 @@ mvn test -Dtest=BlockHashPropertyTest
 - Architecture diagram
 
 ### Follow-up materials:
-- Design document (.kiro/specs/blockchain-supply-chain/design.md)
-- Requirements document (.kiro/specs/blockchain-supply-chain/requirements.md)
+- Design document (docs/design.md)
+- Requirements document (docs/requirements.md)
 - Test coverage report
 
 ---
